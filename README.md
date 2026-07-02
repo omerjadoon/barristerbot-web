@@ -27,8 +27,9 @@ graph TD
     PostGuard --> PIIDemask[PII De-masking Layer]
     PIIDemask --> UI
     
-    %% Evaluation Layer
-    Orchestrator -.-> DeepEval[(DeepEval Monitoring)]
+    %% Evaluation & Monitoring Layers
+    Orchestrator -.-> DeepEval[(DeepEval Evaluation)]
+    Orchestrator -.-> Langfuse[(Langfuse Monitoring)]
 ```
 
 ### 1. Agentic Orchestration (`LangGraph`)
@@ -52,12 +53,10 @@ Legal assistants must be secure, private, and compliant with privacy standards. 
 - **PII Masking**: Redacts sensitive personal information (such as names, personal IDs/CNICs, phone numbers, and addresses) from the user query before sending data to external APIs, and re-injects/de-masks them before displaying the final response.
 - **Guardrails**: Prevents hallucinated citations, blocks prompt-injection attempts, and ensures the model does not provide unauthorized legal advice (acting strictly as an educational/research tool).
 
-### 5. Continuous Quality & Evaluation (`DeepEval`)
-We use **DeepEval** to run regression tests and monitor production quality across key legal metrics:
-- Faithfulness (Factual Consistency)
-- Answer Relevancy
-- Context Recall
-- Hallucination detection
+### 5. Evaluation & Monitoring (`DeepEval` & `Langfuse`)
+To maintain high confidence in production, we separate evaluation and monitoring:
+- **DeepEval (Evaluation)**: Automated offline and CI/CD regression tests to evaluate legal metrics (Faithfulness, Answer Relevancy, Context Recall, and Hallucination detection).
+- **Langfuse (Monitoring & Observability)**: Production tracing of multi-agent LangGraph execution paths, token usage, latency analysis, prompt version management, and user feedback capture.
 
 ---
 
